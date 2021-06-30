@@ -1,0 +1,131 @@
+{{extend '../_layouts/home.html'}}
+
+{{block 'title'}}{{'多人博客 - 首页'}}{{/block}}
+
+{{block 'body'}}
+<section class="container">
+	{{include '../_partials/settings-nav.html'}}
+	<div class="col-md-5">
+		<div class="subhead">
+			<h2>修改密码</h2>
+		</div>
+		<hr>
+		<form>
+			<div class="form-group">
+				<label for="Password1">原始密码</label>
+				<input type="password" class="form-control" id="Password1">
+				<input type="text" style="display: none;" class="form-control" id="email1" value="{{user.email}}">
+				<label class="pull-right" id="dis" style="color: red; display: none;">请先输入原始密码</label>
+				<label class="pull-right" id="dis1" style="color: red; display: none;">原始密码输入错误</label>
+			</div>
+			<div class="form-group">
+				<label for="Password2">新的密码</label>
+				<input type="password" class="form-control" id="Password2" placeholder="">
+			</div>
+			<div class="form-group">
+				<label for="Password3">确认密码</label>
+				<input type="password" class="form-control" id="Password3" placeholder="">
+				<label class="pull-right" id="dis2" style="color: red; display: none;">两次输入的密码不一致</label>
+			</div>
+			<button type="submit" id='submit' class="btn btn-success">保存</button>
+		</form>
+		<div class="subhead">
+			<h2>注销账号</h2>
+			<hr>
+		</div>
+		<div>
+			<p>一旦注销，不可找回，请谨慎操作</p>
+			<button class="btn btn-danger" id="delect">删除</button>
+		</div>
+		<hr>
+	</div>
+</section>
+{{/block}}
+{{block 'script'}}
+<script type="text/javascript">
+	$('#Password1').blur(function() {
+			if (this.value === '') {
+				return $('#dis').css('display', 'block')
+			}
+			var data = {}
+			data.password = $('#Password1').val()
+			data.email = $('#email1').val()
+			$.ajax({
+				url: '/changePwd',
+				type: 'post',
+				data: data,
+				dataType: 'json',
+				success: function(data) {
+					var err_code = data.err_code
+					if (err_code === 0) {
+
+					} else if (err_code === 1) {
+						$('#dis1').css('display', 'block')
+					} else if (err_code === 500) {
+						window.alert('服务器忙，请稍后重试！')
+					}
+				}
+
+			})
+		})
+		.focus(function() {
+			$('#dis').css('display', 'none')
+			$('#dis1').css('display', 'none')
+		})
+	$('#submit').click(function(e) {
+		e.preventDefault()
+		var password = $('#Password2').val()
+		if (password !== $('#Password3').val()) {
+			return $('#dis2').css('display', 'block')
+		}
+		var data = {}
+		data.password = password
+		data.email = $('#email1').val()
+		$.ajax({
+			url: '/changepwd1',
+			data: data,
+			type: 'post',
+			datatype: 'json',
+			success: function(data){
+				var err_code = data.err_code
+				if (err_code === 0) {
+					window.alert('密码修改成功！')
+					// 服务端重定向针对异步请求无效
+					window.location.href = '/'
+				} else if (err_code === 500) {
+					window.alert('服务器忙，请稍后重试！')
+				}
+			}
+
+		})
+	})
+	$('#Password2').focus(function() {
+		$('#dis2').css('display', 'none')
+	})
+	$('#Password3').focus(function() {
+		$('#dis2').css('display', 'none')
+	})
+	$('#delect').click(function(){
+		
+		var del = {}
+		del.email = $('#email1').val()
+		$.ajax({
+			url: '/delect',
+			data: del,
+			type: 'post',
+			datatype: 'json',
+			success: function(data){
+				var err_code = data.err_code
+				if (err_code === 0) {
+					window.alert('删除成功！')
+					// 服务端重定向针对异步请求无效
+					window.location.href = '/'
+				} else if (err_code === 1) {
+					console.log(data)
+				} 
+			}
+			
+		})
+	})
+</script>
+{{/block}}

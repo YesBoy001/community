@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<title>Document</title>
+		<link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.css">
+		<link rel="stylesheet" href="/public/css/login.css">
+	</head>
+
+	<body>
+		<div class="main">
+			<div class="header">
+				<a href="/">
+					<img src="/public/img/Llogin.png" style="width: 150px;background-color: #f9f9f9;" alt="">
+					<!-- <span class="glyphicon glyphicon-apple" style="color: red;font-size: 50px; margin-top: -10px;"></span>--> <!-- 用于测试boostrap字体图标 -->
+				</a>
+				<h1>用户登录</h1>
+			</div>
+			<form id="login_form">
+				<div class="form-group">
+					<label for="">邮箱</label>
+					<input type="email" class="form-control" id="" required name="email" placeholder="Email" autofocus>
+				</div>
+				<div class="form-group">
+					<label for="">密码</label>
+					<a class="pull-right" href="/login/forget">忘记密码？</a>
+					<input type="password" class="form-control" required id="password" name="password" placeholder="Password">
+				</div>
+				<div class="checkbox">
+					<label>
+						<input type="checkbox">记住我
+					</label>
+				</div>
+				<button type="submit" class="btn btn-success btn-block">登录</button>
+			</form>
+			
+			<div class="message">
+				<p>没有账号? <a href="/register">点击创建</a>.</p>
+			</div>
+		</div>
+		<script src="/node_modules/jquery/dist/jquery.js"></script>
+		<script type="text/javascript">
+			$('#login_form').on('submit', function(e) {
+				e.preventDefault()
+				var formData = $(this).serialize()
+				$.ajax({
+					url: '/login',
+					data: formData,
+					dataType: 'json',
+					type: 'post',
+					success: function(data) {
+						var err_code = data.err_code
+						if(err_code === 500){
+							return alert('服务器忙')
+						}else if(err_code === 0){
+							// return alert('用户登录成功')
+							 window.location.href = '/'
+						}
+						else if(err_code === 1){
+							// return alert('注册用户成功')
+							return alert('邮箱或密码不正确')
+						}
+				
+					}
+				})
+			})
+		</script>
+	</body>
+
+</html>

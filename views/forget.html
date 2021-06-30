@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<title>Document</title>
+		<link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.css">
+		<link rel="stylesheet" href="/public/css/login.css">
+	</head>
+
+	<body>
+		<div class="main">
+			<div class="header">
+				<a href="/">
+					<img src="/public/img/logo.jpg" alt="">
+				</a>
+				<h1>验证密保</h1>
+			</div>
+			<form id="secret_form">
+				<div class="form-group">
+					<label for="">输入邮箱：</label>
+					<input type="text" class="form-control" required name="email">
+					<!-- <input type="password" class="form-control" id="password" name="secret" placeholder="Password"> -->
+				</div>
+				<div class="form-group">
+					<label for="">输入密保问题：</label>
+					<select class="form-control" style="margin-bottom: 10px;" name="secretQuestion">
+						<option name='secretQuestion'>你最喜欢的运动是？</option>
+						<option name='secretQuestion'>你最喜欢的国家是？</option>
+						<option name='secretQuestion'>你最喜欢的学校是？</option>
+						<option name='secretQuestion'>你最喜欢的汽车是？</option>
+					</select>
+				</div>
+				<div class="form-group">
+					<label for="">输入密保答案：</label>
+					<input type="text" class="form-control" required id="Secret" autocomplete="off" name="secret"
+						placeholder="答案">
+					<!-- <input type="password" class="form-control" id="password" name="secret" placeholder="Password"> -->
+				</div>
+
+				<button type="submit" class="btn btn-success btn-block">提交</button>
+			</form>
+
+		</div>
+		<script src="/node_modules/jquery/dist/jquery.js"></script>
+	<script type="text/javascript">
+			$('#secret_form').on('submit', function(e) {
+				e.preventDefault()
+				var formData = $(this).serialize()
+				$.ajax({
+					url: '/login/forget',
+					data: formData,
+					dataType: 'json',
+					type: 'post',
+					success: function(data) {
+						var err_code = data.err_code
+						if(err_code === 500){
+							return alert(data.message)
+						}else if(err_code === 0){
+							// return alert(data.message)
+							 window.location.href = '/login/forget/upPassword?email='+ data.email
+						}
+						else if(err_code === 1){
+							// return alert('注册用户成功')
+							return alert(data.message)
+						}
+				
+					}
+				})
+			})
+		</script>
+	</body>
+
+</html>

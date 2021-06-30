@@ -1,0 +1,679 @@
+{{extend '../_layouts/home.html'}}
+
+{{block 'title'}}{{'多人博客 - 首页'}}{{/block}}
+
+{{block 'head'}}
+<!-- <link rel="stylesheet" href="/public/css/markdown-github.css"> -->
+<style>
+	.panel .panel-heading .action i {
+		margin-right: 10px;
+	}
+
+	@font-face {
+		font-family: 'icomoon';
+		src: url('/public/icomoon/fonts/icomoon.eot?oxseof');
+		src: url('/public/icomoon/fonts/icomoon.eot?oxseof#iefix') format('embedded-opentype'),
+			url('/public/icomoon/fonts/icomoon.ttf?oxseof') format('truetype'),
+			url('/public/icomoon/fonts/icomoon.woff?oxseof') format('woff'),
+			url('/public/icomoon/fonts/icomoon.svg?oxseof#icomoon') format('svg');
+		font-weight: normal;
+		font-style: normal;
+		font-display: block;
+	}
+
+	.like {
+		font-family: 'icomoon';
+		cursor: pointer;
+		font-size: 15px;
+		/* color: #c0c0c0; */
+	}
+
+	.dislike::before {
+		margin-top: 15px;
+		content: '\e902';
+		font-family: 'icomoon';
+		font-size: 15px;
+	}
+
+
+	.container {
+		width: 1000px;
+	}
+
+	.commentbox {
+		width: 900px;
+		margin: 20px auto;
+	}
+
+	.mytextarea {
+		width: 100%;
+		overflow: auto;
+		word-break: break-all;
+		height: 100px;
+		color: #000;
+		font-size: 1em;
+		resize: none;
+	}
+
+	.comment-list {
+		width: 900px;
+		margin: 20px auto;
+		clear: both;
+		padding-top: 20px;
+	}
+
+	.comment-list .comment-info {
+		position: relative;
+		margin-bottom: 20px;
+		margin-bottom: 20px;
+		border-bottom: 1px solid #ccc;
+	}
+
+	.comment-list .comment-info header {
+		width: 10%;
+		position: absolute;
+	}
+
+	.comment-list .comment-info header img {
+		width: 100%;
+		border-radius: 50%;
+		padding: 5px;
+	}
+
+	.comment-list .comment-info .comment-right {
+		padding: 5px 0px 5px 11%;
+	}
+
+	.comment-list .comment-info .comment-right h3 {
+		margin: 5px 0px;
+	}
+
+	.comment-list .comment-info .comment-right .comment-content-header {
+		height: 25px;
+	}
+
+	.comment-list .comment-info .comment-right .comment-content-header span,
+	.comment-list .comment-info .comment-right .comment-content-footer span {
+		padding-right: 2em;
+		color: #aaa;
+	}
+
+	.comment-list .comment-info .comment-right .comment-content-header span,
+	.comment-list .comment-info .comment-right .comment-content-footer span.reply-btn,
+	.send,
+	.reply-list-btn {
+		cursor: pointer;
+	}
+
+	.comment-list .comment-info .comment-right .reply-list {
+		border-left: 3px solid #ccc;
+		padding-left: 7px;
+	}
+
+	.comment-list .comment-info .comment-right .reply-list .reply {
+		border-bottom: 1px dashed #ccc;
+	}
+
+	.comment-list .comment-info .comment-right .reply-list .reply div span {
+		padding-left: 10px;
+	}
+
+	.comment-list .comment-info .comment-right .reply-list .reply p span {
+		padding-right: 2em;
+		color: #aaa;
+	}
+
+	.But {
+		width: 300px;
+		height: 30px;
+		/* margin: 15px auto 0px; */
+		margin-left: -5px;
+		margin-top: -5px;
+		/* border: 1px solid red; */
+		position: relative;
+		/*相对，参考对象*/
+	}
+
+	.But img.bq {
+		float: left;
+		/*左浮动*/
+	}
+
+	.But span.submit {
+		width: 80px;
+		height: 30px;
+		background: #ff8140;
+		display: block;
+		float: right;
+		/*右浮动*/
+		line-height: 30px;
+		border-radius: 5px;
+		cursor: pointer;
+		/*手指*/
+		color: #fff;
+		font-size: 12px;
+		text-align: center;
+		font-family: "微软雅黑";
+	}
+
+	.But .face {
+		width: 400px;
+		background: #fff;
+		border: 1px solid #ddd;
+		box-shadow: 0 0 12px #666;
+		position: absolute;
+		/*绝对定位*/
+		top: 21px;
+		left: 15px;
+		z-index: 4;
+		overflow-y: auto;
+		display: none;
+		/*隐藏*/
+	}
+
+	.But .face ul {
+		width: 100%;
+		height: 100%;
+		display: flex;
+		flex-wrap: wrap;
+		padding: 8px;
+		box-sizing: border-box;
+
+	}
+
+	.But .face ul li {
+		width: 30px;
+		height: 30px;
+		list-style-type: none;
+		cursor: pointer;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.bq::before {
+		font-family: 'icomoon';
+		content: '\e908';
+		font-size: 25px;
+		/* color: red; */
+	}
+
+	.message {
+		width: 900px;
+		height: 100px;
+		margin: 0 auto;
+		overflow: hidden;
+		outline: none;
+		border: 1px solid #ddd;
+		padding: 8px;
+		box-sizing: border-box;
+		font-size: 14px;
+		-webkit-background-clip: text;
+		background-image: linear-gradient(to right, #778899 50%, #333 100%);
+		/*粗细 风格 颜色*/
+	}
+
+	.messageS {
+		color: #a8b2b6;
+		float: left;
+		/* display: inline-block; */
+	}
+</style>
+{{/block}}
+
+{{block 'body'}}
+<section class="container">
+	<div class="row" style="margin-bottom: 0px;height: 150px;">
+		<div class="col-md-9">
+			<article class="markdown-body">
+				<div id="" style="position: relative; top: 20px; left: 5px;">
+					<img src="{{topic.publisher_avatar}}" style="width: 100px; height: 100px; border-radius: 3px;">
+					<div id="" style="position: absolute; left: 120px; top: -3px;">
+						<a name="user-content-_2" href="#_2" class="headeranchor-link" aria-hidden="true">
+							作者：{{topic.publisher}}
+						</a><br>
+						<a id="fan" style="margin: 5px 0; display: inline-block;">粉丝数：{{p_user.fan}}</a><br>
+						<a name="user-content-_1" href="#_1" class="headeranchor-link" aria-hidden="true">
+							标题：{{topic.title}}
+						</a><br>
+						<button type="button" style=" margin-top: 5px;" class="btn btn-success" id="getfan">关注</button>
+					</div>
+				</div>
+				<!-- <div id="" style="margin-top: 40px;">
+					
+				</div> -->
+			</article>
+		</div>
+	</div>
+	<!-- 发表内容 -->
+	<div class="panel">
+		<div class="header topic_header">
+			<span class="topic_full_title">
+			</span>
+			<input type="text" id="topicId" value="{{topic._id}} " style="display: none;" />
+			<div class="changes" style="position: relative;">
+				<span>
+					发布于：{{topic.createtime}}
+				</span>
+				<span style="position: absolute; right: 0;">
+					{{topic.readNum}}次浏览
+				</span>
+			</div>
+		</div>
+		<div class="inner topic">
+			<div class="topic_content">
+				<div class="markdown-text">
+					<p>内容：</p>
+					<p>{{topic.content}}</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+
+	<!-- 发表评论 -->
+	{{if user}}
+	<div class=" panel">
+		<div class="commentbox ">
+			<form id="comment_form">
+				<div class="form-group">
+					<label for="">评论:</label>
+
+					<!-- <textarea class="mytextarea" required name="comment_content" placeholder="来说几句吧......" cols="10"
+							rows="10"></textarea> -->
+					<div class="message" id="message" contentEditable='true'>
+						<span class="messageS">来说几句吧......</span>
+					</div>
+				</div>
+
+				<div class="But">
+					<span class='bq'></span>
+					<!-- <img src="/public/images/bba_thumb.gif" class='bq' /> -->
+					<!-- <span class='submit'>发表</span> -->
+					<div class="face">
+						<ul id="face">
+							<li><img src="/public/images/smilea_thumb.gif" title="呵呵]"></li>
+							<li><img src="/public/images/tootha_thumb.gif" title="嘻嘻]"></li>
+							<li><img src="/public/images/laugh.gif" title="[哈哈]"></li>
+							<li><img src="/public/images/tza_thumb.gif" title="[可爱]"></li>
+							<li><img src="/public/images/kl_thumb.gif" title="[可怜]"></li>
+							<li><img src="/public/images/kbsa_thumb.gif" title="[挖鼻屎]"></li>
+							<li><img src="/public/images/cj_thumb.gif" title="[吃惊]"></li>
+							<li><img src="/public/images/shamea_thumb.gif" title="[害羞]"></li>
+							<li><img src="/public/images/zy_thumb.gif" title="[挤眼]"></li>
+							<li><img src="/public/images/bz_thumb.gif" title="[闭嘴]"></li>
+							<li><img src="/public/images/bs2_thumb.gif" title="[鄙视]"></li>
+							<li><img src="/public/images/lovea_thumb.gif" title="[爱你]"></li>
+							<li><img src="/public/images/sada_thumb.gif" title="[泪]"></li>
+							<li><img src="/public/images/heia_thumb.gif" title="[偷笑]"></li>
+							<li><img src="/public/images/qq_thumb.gif" title="[亲亲]"></li>
+							<li><img src="/public/images/sb_thumb.gif" title="[生病]"></li>
+							<li><img src="/public/images/mb_thumb.gif" title="[太开心]"></li>
+							<li><img src="/public/images/ldln_thumb.gif" title="[懒得理你]"></li>
+							<li><img src="/public/images/yhh_thumb.gif" title="[右哼哼]"></li>
+							<li><img src="/public/images/zhh_thumb.gif" title="[左哼哼]"></li>
+							<li><img src="/public/images/x_thumb.gif" title="[嘘]"></li>
+							<li><img src="/public/images/cry.gif" title="[衰]"></li>
+							<li><img src="/public/images/wq_thumb.gif" title="[委屈]"></li>
+							<li><img src="/public/images/t_thumb.gif" title="[吐]"></li>
+							<li><img src="/public/images/k_thumb.gif" title="[打哈气]"></li>
+							<li><img src="/public/images/bba_thumb.gif" title="[抱抱]"></li>
+							<li><img src="/public/images/angrya_thumb.gif" title="[怒]"></li>
+							<li><img src="/public/images/yw_thumb.gif" title="[疑问]"></li>
+							<li><img src="/public/images/cza_thumb.gif" title="[馋嘴]"></li>
+							<li><img src="/public/images/88_thumb.gif" title="[拜拜]"></li>
+							<li><img src="/public/images/sk_thumb.gif" title="[思考]"></li>
+							<li><img src="/public/images/sweata_thumb.gif" title="[汗]"></li>
+							<li><img src="/public/images/sleepya_thumb.gif" title="[困]"></li>
+							<li><img src="/public/images/sleepa_thumb.gif" title="[睡觉]"></li>
+							<li><img src="/public/images/money_thumb.gif" title="[钱]"></li>
+							<li><img src="/public/images/sw_thumb.gif" title="[失望]"></li>
+							<li><img src="/public/images/cool_thumb.gif" title="[酷]"></li>
+							<li><img src="/public/images/hsa_thumb.gif" title="[花心]"></li>
+							<li><img src="/public/images/hatea_thumb.gif" title="[哼]"></li>
+							<li><img src="/public/images/gza_thumb.gif" title="[鼓掌]"></li>
+							<li><img src="/public/images/dizzya_thumb.gif" title="[晕]"></li>
+							<li><img src="/public/images/bs_thumb.gif" title="[悲伤]"></li>
+						</ul>
+					</div>
+				</div>
+
+
+
+
+				<div class="form-group" style="display: none;">
+					<label for="">评论人id</label>
+					<input type="text" name="comment_id" value="{{user._id}}">
+				</div>
+				<div class="form-group" style="display: none;">
+					<label for="">评论人昵称</label>
+					<input type="text" name="comment_nickname" value="{{user.nickname}}">
+				</div>
+				<div class="form-group" style="display: none;">
+					<label for="">评论人头像</label>
+					<input type="text" name="comment_avatar" value="{{user.avatar}}">
+				</div>
+				<div class="form-group" style="display: none;">
+					<label for="">文章id</label>
+					<input type="text" name="topic_id" value="{{topic.id}}">
+					<!-- <input type="text" name="publisher_id" value="{{topic.publisher_id}}"> -->
+				</div>
+				<div class="form-group" style="display: none;">
+					<label for="">发布时间</label>
+					<input type="text" name="comment_time" id="createtime" value="">
+				</div>
+				<button type="submit" class="btn btn-primary pull-right" style="margin-top: -30px;"
+					id="comment">发表评论</button>
+			</form>
+		</div>
+		<div class="comment-list">
+
+		</div>
+	</div>
+
+
+
+	{{else}}
+		{{/if}}
+
+		<!-- 评论 -->
+
+
+
+		<!-- 评论 -->
+		<div id="panel1" class="panel">
+
+		</div>
+
+</section>
+{{/block}}
+
+{{block 'script'}}
+<script src="/node_modules/jquery/dist/jquery.js"></script>
+<script src="/node_modules/moment/moment.js"></script>
+<script type="text/javascript">
+	$('#getfan').click(function(e) {
+		// console.log('点击了关注')
+		$.ajax({
+			url: '/pgetfan',
+			data: '',
+			type: 'get',
+			datatype: 'json',
+			success: function(data) {
+				let err_code = data.err_code
+				let user = data.user
+				// console.log(user)
+				if (err_code === 1) {
+					alert('您还没有登录，请先登录')
+					window.location.href = '/login'
+				} else if (err_code === 0) {
+					let p_id = $('#publisher_id').val()
+					$.ajax({
+						url: '/getfan',
+						data: 'publisher_id={{topic.publisher_id}}&fan_id=' + user._id,
+						type: 'get',
+						datatype: 'json',
+						success: function(datas) {
+							let err = datas.err_code
+							if (err === 0) {
+								alert(datas.message)
+							} else if (err === 500) {
+								console.log(datas.message)
+							} else if (err === 2) {
+								alert(datas.message)
+							} else if (err === 1) {
+								$('#fan').val(datas.fan)
+								alert(datas.message)
+								window.location.reload()
+							}
+						}
+
+					})
+				}
+
+
+			}
+		})
+	})
+
+	$('#comment_form').on('submit', function(e) {
+
+		e.preventDefault()
+
+		var nowDate = new Date();
+		/* 时间模块 */
+		nowDate = moment(nowDate).format('YYYY-MM-DD HH:mm:ss ')
+		document.getElementById("createtime").value = nowDate;
+
+		// console.log(nowDate)
+		var formData = $(this).serialize()
+		// console.log(formData)
+		formData += '&comment_content=' + $('.message').html()
+		// console.log($('.message').html())
+
+		$.ajax({
+			url: '/comment',
+			dataType: 'json',
+			type: 'post',
+			data: formData,
+			success: function(data) {
+				console.log(data)
+				let err_code = data.err_code
+				if (err_code === 1) {
+					console.log(data.message)
+				} else if (err_code === 0) {
+					window.location.reload()
+				}
+			}
+		})
+
+	})
+
+	// $('.like').click(function(e) {
+	// 	// console.log($(this).next().val())
+	// 	let _this = this
+	// 	$.ajax({
+	// 		url: '/show/like',
+	// 		data: $(this).next().serialize(),
+	// 		type: 'post',
+	// 		dataType: 'json',
+	// 		success: function(data) {
+	// 			let err_code = data.err_code
+	// 			if (err_code === 0) {
+	// 				console.log(data.message)
+	// 			} else if (err_code === 1) {
+	// 				$(_this).val(data.like)
+	// 				window.location.reload()
+	// 			} else if (err_code === 2) {
+	// 				window.alert(data.message)
+	// 				window.location.href = '/login'
+	// 			} else if (err_code === 500) {
+	// 				window.alert(data.message)
+	// 				// window.location.href = '/login'
+	// 			}
+	// 		}
+	// 	})
+	// })
+	// $('.dislike').click(function(e) {
+	// 	let _this = this
+	// 	$.ajax({
+	// 		url: '/show/dislike',
+	// 		data: $(this).next().serialize(),
+	// 		type: 'post',
+	// 		dataType: 'json',
+	// 		success: function(data) {
+	// 			let err_code = data.err_code
+	// 			if (err_code === 0) {
+	// 				console.log(data.message)
+	// 			} else if (err_code === 1) {
+	// 				$(_this).val(data.dislike)
+	// 				window.location.reload()
+	// 			} else if (err_code === 2) {
+	// 				window.alert(data.message)
+	// 				window.location.href = '/login'
+	// 			} else if (err_code === 500) {
+	// 				window.alert(data.message)
+	// 				// window.location.href = '/login'
+	// 			}
+	// 		}
+	// 	})
+	// })
+	$(".bq").click(function(e) {
+		$(".face").slideDown(); //慢慢向下展开
+		e.stopPropagation(); //阻止冒泡事件
+	});
+	$('.message').click(function() {
+		$('.messageS').remove()
+	})
+
+	//在桌面任意地方点击，关闭表情框
+	$(document).click(function(e) {
+		var target = e ? e.target : window.event.srcElement;
+		if (target.id != "message") {
+			let txt = $(".message").html()
+			if (!txt) {
+				$(".message").html('<span class="messageS">来说几句吧......</span>')
+				return;
+			}
+		}
+		if (target.nodeName != "IMG") {
+			$(".face").slideUp(); //慢慢向上收
+		}
+	});
+	//点击小图标时，添加功能
+	$(".face ul li").click(function() {
+
+		// $('.messageS').html('')
+		$('.messageS').remove()
+		let simg = $(this).find("img").clone();
+		// console.log(simg)
+		$(".message").append(simg); //将表情添加到输入框
+
+	});
+	findComment()
+
+	function findComment() {
+		// console.log('进入了自调用方法')
+		// console.log($('#topicId').val().replace(/"/g, ''))
+		let topicId = 'topicId=' + $('#topicId').val().replace(/"/g, '')
+
+		$.ajax({
+			url: '/findcomment',
+			type: 'post',
+			dataType: 'json',
+			data: topicId,
+			success: function(data) {
+				var err_code = data.err_code
+				if (err_code === 500) {
+					alert(data.message)
+				} else if (err_code === 1) {
+					let comment = data.data
+					comment.forEach(item => {
+						let str = `
+					
+						
+						<div class="cell reply_area reply_item reply_highlight" reply_id="5fdb4a8a0f99cbc8325e341e" reply_to_id=""
+							id="5fdb4a8a0f99cbc8325e341e">
+							<div class="author_content">
+								<a href="/user/hyj1991" class="user_avatar">
+									<img src="${item.comment_avatar}" title="hyj1991" alt="图片丢失"></a>
+								<div class="user_info">
+									<a class="dark reply_author" href="/user/hyj1991">${item.comment_nickname}</a>
+									<a class="reply_time" href="#">${item.comment_time}</a>
+								</div>
+								<div class="user_action">
+									<span onclick="dislike('${item._id}')" style="cursor: pointer;" >
+										<i class="dislike" title="不喜欢"></i>
+										<input type="text" class = 'dislike1' name="comment_dislikeId" value="${item._id}" style="display: none;" />
+										<span class="up-count" style="font-size: 12px;color: #c0c0c0;">
+											${item.dislike}
+										</span>
+									</span>
+								</div>
+								<div class="user_action">
+									<span onclick="like('${item._id}')" style="cursor: pointer;" >
+										<i class="like"  title="喜欢"></i>
+										<input type="text" class = 'like1' name="comment_likeId" value="${item._id}" style="display: none;" />
+										<class="up-count" style="font-size: 12px;color: #c0c0c0;">
+											${item.like}
+									</span>
+									</span>
+								</div>
+								
+					
+							</div>
+							<div class="reply_content from-hyj1991">
+								<div class="markdown-text" >
+									<span>${item.comment_content}</span>
+								</div>
+							</div>
+						</div>
+					
+					
+					`
+						$("#panel1").prepend(str);
+
+					})
+
+				}
+			}
+		})
+	}
+
+	function like(id) {
+		let _this = this
+		let comment_likeId = 'comment_likeId=' + id
+		$.ajax({
+			url: '/show/like',
+			data: comment_likeId,
+			type: 'post',
+			dataType: 'json',
+			success: function(data) {
+				let err_code = data.err_code
+				if (err_code === 0) {
+					console.log(data.message)
+				} else if (err_code === 1) {
+					$(_this).val(data.like)
+					window.location.reload()
+				} else if (err_code === 2) {
+					window.alert(data.message)
+					window.location.href = '/login'
+				} else if (err_code === 500) {
+					window.alert(data.message)
+					// window.location.href = '/login'
+				}
+			}
+		})
+	}
+
+	function dislike(id) {
+		let _this = this
+
+		let comment_dislikeId = 'comment_dislikeId=' + id
+		$.ajax({
+			url: '/show/dislike',
+			data: comment_dislikeId,
+			type: 'post',
+			dataType: 'json',
+			success: function(data) {
+				let err_code = data.err_code
+				if (err_code === 0) {
+					console.log(data.message)
+				} else if (err_code === 1) {
+					$(_this).val(data.dislike)
+					window.location.reload()
+				} else if (err_code === 2) {
+					window.alert(data.message)
+					window.location.href = '/login'
+				} else if (err_code === 500) {
+					window.alert(data.message)
+					// window.location.href = '/login'
+				}
+			}
+		})
+	}
+</script>
+
+{{/block}}

@@ -1,0 +1,142 @@
+{{extend '../_layouts/home.html'}}
+
+{{block 'title'}}{{'多人博客 - 首页'}}{{/block}}
+
+{{block 'body'}}
+<section class="container">
+	{{include '../_partials/settings-nav.html'}}
+	<div class="col-md-5">
+		<form id='login_form'>
+			<div class="form-group">
+				<label for="exampleInputEmail1">邮箱</label>
+				<p class="form-control-static">{{user.email}}</p>
+				<input type="text" value="{{user.email}}" name='email' class="form-control" style="display: none;">
+			</div>
+			<div class="form-group">
+				<label for="exampleInputPassword1">昵称</label>
+				<input type="text" required value="{{user.nickname}}" name='nickname' class="form-control"
+					id="exampleInputPassword1" placeholder="">
+			</div>
+			<div class="form-group">
+				<label for="exampleInputPassword1">介绍</label>
+				<textarea class="form-control" required name='bio' rows="3">{{user.bio}}</textarea>
+			</div>
+			<div class="form-group">
+				<label for="exampleInputPassword1">性别</label>
+				{{if user.gender === '0'}}
+				<div>
+					<label class="radio-inline">
+						<input type="radio" required checked="checked" name="gender" id="inlineRadio1" value="0"> 男
+					</label>
+					<label class="radio-inline">
+						<input type="radio" name="gender" id="inlineRadio2" value="1"> 女
+					</label>
+					<label class="radio-inline">
+						<input type="radio" name="gender" id="inlineRadio3" value="-1"> 保密
+					</label>
+				</div>
+				{{else if user.gender === '1'}}
+					<div>
+						<label class="radio-inline">
+							<input type="radio" required name="gender" id="inlineRadio1" value="0"> 男
+						</label>
+						<label class="radio-inline">
+							<input type="radio" name="gender" checked="checked" id="inlineRadio2" value="1"> 女
+						</label>
+						<label class="radio-inline">
+							<input type="radio" name="gender" id="inlineRadio3" value="-1"> 保密
+						</label>
+					</div>
+					{{else }}
+						<div>
+							<label class="radio-inline">
+								<input type="radio" required name="gender" id="inlineRadio1" value="0"> 男
+							</label>
+							<label class="radio-inline">
+								<input type="radio" name="gender" id="inlineRadio2" value="1"> 女
+							</label>
+							<label class="radio-inline">
+								<input type="radio" name="gender" checked="checked" id="inlineRadio3" value="-1"> 保密
+							</label>
+						</div>
+						{{/if}}
+			</div>
+			<div class="form-group">
+				<label for="exampleInputPassword1">生日</label>
+				<input type="date" required name="birthday" class="form-control" value="{{user.birthday}}">
+				<input type="text"  name="avatar" id="avatar" style="opacity: 0;" class="form-control" value="{{user.avatar}}">
+			</div>
+			
+			<button type="submit" class="btn btn-success">保存</button>
+		</form>
+		
+	</div>
+	<div class="col-md-2 profile-avatar">
+		<dl>
+			<dt>头像设置</dt>
+			<dd style="width: 150px !important; ">
+				<img class="avatar" style="width: 150px !important; " id="id_img" src="{{user.avatar}}" alt="">
+				<div style="position: relative;">
+					<button class="btn btn-default col-md-2" id="upImage" style="width: 150px !important; padding:5px 0 !important; margin: 0 !important;">
+						<input name="" id="input" type="file" style="border: 1px solid red; position: absolute; top: 0;left: 0;height: 30px; width: 150px !important;opacity: 0;  padding:5px 0 !important; margin: 0 !important;" >
+						上传新头像
+						</button>
+				</div>
+			</dd>
+		</dl>
+	</div>
+	
+</section>
+{{/block}}
+
+
+{{block 'script'}}
+
+<script type="text/javascript">
+	// var img = '/public/img/avatar-default.png'
+	$('#input').change(function(e) {
+		
+		// console.log(this.files)
+		// 先获取用户上传的文件对象
+		let fileObj = this.files[0];
+		// console.log(fileObj)
+		if((fileObj.size)/1024 > 100){
+			return alert('上传的头像不能大于100kB')
+		}
+		
+		// 生成一个文件读取的内置对象
+		let fileReader = new FileReader();
+		// 将文件对象传递给内置对象
+		fileReader.readAsDataURL(fileObj); //这是一个异步执行的过程，所以需要onload回调函数执行读取数据后的操作
+		// 将读取出文件对象替换到img标签
+		fileReader.onload = function() { // 等待文件阅读器读取完毕再渲染图片
+			$('#id_img').attr('src', fileReader.result)
+			$('#avatar').attr('value', fileReader.result)
+		}
+	})
+	$('#login_form').on('submit', function(e) {
+		e.preventDefault()
+		var formData = $(this).serialize()
+		// formData.avatar = img
+		console.log(formData)
+		$.ajax({
+			url: '/stetings/profile',
+			type: 'post',
+			data: formData,
+			dataType: 'json',
+			success: function(data) {
+				// console.log(data)
+				var err_code = data.err_code
+				if (err_code === 0) {
+					window.alert('修改成功！')
+					// 服务端重定向针对异步请求无效
+					window.location.href = '/'
+				}else if (err_code === 500) {
+					window.alert('服务器忙，请稍后重试！')
+				}
+			}
+		})
+	
+	})
+</script>
+{{/block}}

@@ -1,0 +1,71 @@
+{{extend '../_layouts/home.html'}}
+
+{{block 'title'}}{{'多人博客 - 首页'}}{{/block}}
+
+{{block 'body'}}
+<section class="container">
+  <div class="row">
+    <div class="col-md-5">
+      <form id="login_form">
+        <div class="form-group">
+          <label for="exampleInputEmail1">选择板块</label>
+          <select class="form-control" name = 'model'>
+            <option name = 'model'>分享</option>
+            <option name = 'model'>问答</option>
+            <option name = 'model'>招聘</option>
+            <option name = 'model'>客户端测试</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>标题</label>
+          <input type="text" class="form-control" style="background-color: #FFFFFF;" name="title" placeholder="文章标题">
+        </div>
+        <div class="form-group">
+          <label >内容</label>
+          <textarea class="form-control" name = 'content' rows="3"></textarea>
+        </div>
+		<input type="text" style="display: none;" name="publisher"  value="{{user.nickname}}" />
+		<input type="text" style="display: none;" name="publisher_avatar"  value="{{user.avatar}}" />
+		<input type="text" style="display: none;" name="publisher_id" value="{{user._id}}" />
+		<input type="text" style="display: none;" name="createtime" id="createtime" value="" />
+        <button type="submit" class="btn btn-success">发表</button>
+      </form>
+    </div>
+  </div>
+</section>
+{{/block}}
+
+{{ block 'script'}}
+<script src="/node_modules/moment/moment.js"></script>
+		<script>
+			$('#plate_sel').removeAttr("disabled")
+			
+			var nowDate = new Date();
+			/* 时间模块 */
+			  nowDate = moment(nowDate).format('YYYY-MM-DD HH:mm:ss ')
+			  document.getElementById("createtime").value = nowDate;
+			
+			$('#login_form').on('submit', function(e) {
+				// 阻止submit的默认事件
+				e.preventDefault()
+				// 获取表单提交的信息
+				var formData = $(this).serialize()
+				// console.log(formData)
+				// 通过异步的方式向服务器发起请求
+				$.ajax({
+					url: '/topic/new',
+					type: 'post',
+					data: formData,
+					dataType: 'json',
+					success: function(data) {
+						var err_code = data.err_code
+						if (err_code === 0) {
+							window.location.href = '/'
+						} else if (err_code === 500) {
+							window.alert('服务器忙，请稍后重试！')
+						}
+					}
+				})
+			})
+		</script>
+{{/block}}

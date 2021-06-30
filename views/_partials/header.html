@@ -1,0 +1,90 @@
+<!-- <nav class="navbar " style="background-color: #ffffff;"> -->
+<!-- 	<div class="navbar-header">
+	</div> -->
+<div class="navbar">
+	<div class="navbar-inner">
+		<div class="container">
+			<a class="brand" href="/">
+				<!-- <img src="/public/img/logo1.png"> -->
+				<img src="/public/img/Lindex.png"  alt="" style=" height: 53px; margin-top: -10px;" >
+				<!-- <span class="glyphicon glyphicon-apple" style="color: white;font-size: 50px; margin-top: -10px;">-->
+				</span><!-- 用于测试boostrap字体图标 --> 
+			</a>
+			<form id="search_form" class="navbar-search" action="/search">
+				<input type="text" id="q" name="q" class="search-query span3" value="">
+			</form>
+			
+			<ul class="nav pull-right">
+				{{if user}}
+				<a class="btn btn-default navbar-btn" href="/topic/new">发起</a>
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+						aria-expanded="false">
+						<img width="20" height="20" src="{{user.avatar}}" alt="">
+						<span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu">
+						<li class="dropdown-current-user">
+							当前登录用户: {{user.nickname}}
+						</li>
+						<li class="dropdown-current-user" id="email" value="{{user.email}}" style="display: none;">
+							{{user.email}} </li>
+						<li><a href="/stetings/profile">个人主页</a></li>
+						<li><a href="/settings/admin">设置</a></li>
+						<li><a href="/logout">退出</a></li>
+					</ul>
+				</li>
+	
+				{{else}}
+					<li><a href="/">首页</a></li>
+					<li><a href="/register">注册</a></li>
+					<li><a href="/login">登录</a></li>
+				{{/if}}
+			</ul>
+			
+			<a class="btn btn-navbar" id="responsive-sidebar-trigger">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</a>
+		</div>
+	</div>
+</div>
+
+<!-- 	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+		<a class="navbar-brand" href="/" style="z-index:5;">
+			<img width="90px" src="/public/img/logo3.png" alt="">
+		</a>
+		<form class="navbar-form navbar-left">
+			<div class="form-group">
+				<input type="text" class="form-control" style="margin-top: 10px;" placeholder="Search">
+			</div>
+		</form>
+		<ul class="nav navbar-nav navbar-right">
+			{{ if user }}
+			<a class="btn btn-default navbar-btn" href="/topic/new">发起</a>
+			<li class="dropdown">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+					aria-expanded="false">
+					<img width="20" height="20" src="{{ user.avatar }}" alt="">
+					<span class="caret"></span>
+				</a>
+				<ul class="dropdown-menu">
+					<li class="dropdown-current-user">
+						当前登录用户: {{ user.nickname }}
+					</li>
+					<li class="dropdown-current-user" id="email" value="{{user.email}}" style="display: none;">
+						{{ user.email }}</li>
+					<li><a href="/stetings/profile">个人主页</a></li>
+					<li><a href="/settings/admin">设置</a></li>
+					<li><a href="/logout">退出</a></li>
+				</ul>
+			</li>
+			{{ else }}
+			<a class="btn btn-primary navbar-btn" style="margin-top: 10px;" href="/login">登录</a>
+			<a class="btn btn-success navbar-btn" style="margin-top: 10px;" href="/register">注册</a>
+			{{ /if }}
+		</ul>
+	</div> -->
+
+<!-- </nav>	 -->

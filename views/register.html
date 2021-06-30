@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<title>Document</title>
+		<link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.css">
+		<link rel="stylesheet" href="/public/css/login.css">
+	</head>
+
+	<body>
+		<div class="main">
+			<div class="header">
+				<a href="/">
+					<img src="/public/img/Llogin.png" style="width: 150px;background-color: #f9f9f9;" alt="">
+					<!-- 用于测试boostrap字体图标 -->
+					<!-- <span class="glyphicon glyphicon-apple" style="color: red;font-size: 50px; margin-top: -10px;"></span> -->
+				</a>
+				<h1>用户注册</h1>
+			</div>
+			<form id="register_form" method="post" action="/register">
+				<div class="form-group">
+					<label for="email">邮箱</label>
+					<input type="email" required class="form-control" id="email" name="email" placeholder="Email" autofocus>
+				</div>
+				<div class="form-group">
+					<label for="nickname">昵称</label>
+					<input type="text" required class="form-control" id="nickname" name="nickname" placeholder="Nickname">
+				</div>
+				<div class="form-group">
+					<label for="password">密码</label>
+					<input type="password" required class="form-control" id="password" name="password" placeholder="Password">
+				</div>
+
+				<div class="form-group">
+					<label for="Secret">设置密保问题：</label>
+					<select class="form-control" style="margin-bottom: 10px;" name="secretQuestion">
+						<option name='secretQuestion'>你最喜欢的运动是？</option>
+						<option name='secretQuestion'>你最喜欢的国家是？</option>
+						<option name='secretQuestion'>你最喜欢的学校是？</option>
+						<option name='secretQuestion'>你最喜欢的汽车是？</option>
+					</select>
+					<input type="text" class="form-control" required id="Secret" autocomplete="off" name="secret" placeholder="答案">
+				</div>
+				<button type="submit" class="btn btn-success btn-block">注册</button>
+			</form>
+			<div class="message">
+				<p>已有账号? <a href="/login">点击登录</a>。</p>
+			</div>
+		</div>
+		<script src="/node_modules/jquery/dist/jquery.js"></script>
+		<script type="text/javascript">
+			$('#register_form').on('submit', function(e) {
+				e.preventDefault()
+				var formData = $(this).serialize()
+				$.ajax({
+					url: '/register',
+					data: formData,
+					dataType: 'json',
+					type: 'post',
+					success: function(data) {
+						var err_code = data.err_code
+						if(err_code === 500){
+							return alert('注册用户失败')
+						}else if(err_code === 0){
+							// return alert('注册用户成功')
+							 window.location.href = '/login'
+						}else if(err_code === 1){
+							return alert('用户名或邮箱已经注册过啦')
+						}
+				
+					}
+				})
+			})
+		</script>
+	</body>
+
+</html>
