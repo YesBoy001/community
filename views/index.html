@@ -13,7 +13,7 @@
 
 <div class="container">
 
-	<div class="panel">
+	<div class="panel"  style=" height: 760px;">
 		<div class="header">
 
 			<a href="/" class="topic-tab {{all}}">全部</a>
@@ -23,11 +23,12 @@
 			<a href="/dev" class="topic-tab {{dev}}">客户端测试</a>
 			<a href="/removedata" type="button" class="btn btn-default">删除所有发表数据</a>
 		</div>
-		<div class="cell" style="height: 500px;">
+	<div id=""  class="cell" style="height: 660px; ">
+		<div class="cell" >
 		{{each topic}}
 		<div class="cell" >
 			<a class="user_avatar pull-left" href="#">
-				<img src="{{$value.publisher_avatar}}" title="thonatos">
+				<img src="{{$value.publisher_avatar}}"  style="height: 35px; width: auto;" title="thonatos">
 			</a>
 			<span class="" style="margin: 0 20px ;">
 				<span>{{$value.publisher}}</span>
@@ -42,19 +43,23 @@
 			</span>
 		{{if $value.comment_avatar}}
 		<a class="last_time pull-right" href="#">
-			<img class="user_small_avatar" src="{{$value.comment_avatar}}">
+			<img class="user_small_avatar" style="height: 20px; width: auto;" src="{{$value.comment_avatar}}">
 			<span class="last_active_time">{{$value.commentTime}}</span>
 		</a>
 		{{else}}
-		<a class="last_time pull-right" href="/topic/show?p_id={{$value.publisher_id}}">
+		<a class="last_time pull-right" href="/topic/show?p_id={{$value.publisher_id}}&topic_id={{$value._id}}">
 			<span class="last_active_time">还没有评论咯，赶紧去评论吧</span>
 		</a>
 			{{/if}}
 		</div>
 		{{/each}}
 		</div>
-		<nav aria-label="Page navigation">
-			<ul class="pagination">
+	</div>
+		
+		
+		
+		<nav aria-label="Page navigation" style="margin-top: 0px;">
+			<ul class="pagination"  style="margin-left: 50%;transform:  translateX(-50%);">
 				<li>
 					<a href="#" aria-label="Previous">
 						<span aria-hidden="true">&laquo;</span>
@@ -91,6 +96,9 @@
 		// 		console.log(data)
 		// 	}
 		// })
+	})
+	$('#p').blur(()=>{
+		console.log($)
 	})
 </script>
 {{/block}}

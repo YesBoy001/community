@@ -30,6 +30,7 @@ router.post('/topic/new', (req, res) => {
 })
 
 router.get('/topic/show', (req, res) => {
+	
 	req.query.topic_id = req.query.topic_id.replace(/"/g, '')
 	// console.log(req.query.publisher_id)
 	Topic.findOne({
@@ -132,21 +133,21 @@ router.post('/comment', (req, res) => {
 
 router.post('/findcomment', (req, res) => {
 	// console.log(req.body.topicId.trim())
-	
+
 	Comment.find({
-		topic_id:req.body.topicId.trim()
-	},(err, comment) => {
+		topic_id: req.body.topicId.trim()
+	}, (err, comment) => {
 		if (err) {
 			// console.log(err)
 			return res.status(500).json({
 				err_code: 500,
 				message: '查询评论服务器错误'
 			})
-		} 
+		}
 		// console.log(comment)
 		return res.status(200).json({
 			err_code: 1,
-			message:'查询评论成功',
+			message: '查询评论成功',
 			data: comment
 		})
 	})
@@ -352,4 +353,30 @@ router.post('/show/dislike', (req, res) => {
 	})
 })
 
+router.post('/search', (req, res) => {
+	// console.log(req.body)
+	Topic.find({
+		title: req.body.q
+	}, (err, topic) => {
+		if (err) {
+			console.log(err)
+			return res.status(500).json({
+				err_code: 500,
+				message: '标题搜索失败'
+			})
+		}
+		if (topic.length === 0) {
+			return res.status(200).json({
+				err_code: 0,
+				message: '没有该文章哦'
+			})
+		} 
+		return res.render('index.html', {
+			user: req.session.user,
+			topic: topic
+			// share: 'current-tab'
+		})
+
+	})
+})
 module.exports = router

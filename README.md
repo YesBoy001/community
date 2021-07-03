@@ -19,4 +19,5 @@
 | GET  | /topic/new               | ----                  | ----                                     | 渲染添加话题页面                 |
 | GET  | /logout                  | ----                  | ----                                     | 退出登录                     |
 | GET  | /topic/show              | publisher_id，topic_id | ----                                     | 根据发布者id和话题id查询topic数据并显示 |
-| POST | /comment                 | ----                  | comment_nickname，comment_id，comment_content，comment_avatar，comment_time，topic_id，comment_time | 提交评论信息                   |
+| POST | /comment  
+

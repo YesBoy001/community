@@ -1,20 +1,20 @@
 <!-- <nav class="navbar " style="background-color: #ffffff;"> -->
 <!-- 	<div class="navbar-header">
 	</div> -->
-<div class="navbar">
+<div class="navbar" style="background-color: #9c9c9c;">
 	<div class="navbar-inner">
-		<div class="container">
+		<div class="container" >
 			<a class="brand" href="/">
 				<!-- <img src="/public/img/logo1.png"> -->
-				<img src="/public/img/Lindex.png"  alt="" style=" height: 53px; margin-top: -10px;" >
+				<img src="/public/img/Lindex.png"  alt="" style=" height: 52px; margin-top: -10px;" >
 				<!-- <span class="glyphicon glyphicon-apple" style="color: white;font-size: 50px; margin-top: -10px;">-->
 				</span><!-- 用于测试boostrap字体图标 --> 
 			</a>
-			<form id="search_form" class="navbar-search" action="/search">
-				<input type="text" id="q" name="q" class="search-query span3" value="">
+			<form id="search_form" class="navbar-search" method="post" action="/search">
+				<input type="text" id="q" name="q" class="search-query span3" style="background-color: #FFFAE8;margin-top: 5px;" value="">
 			</form>
 			
-			<ul class="nav pull-right">
+			<ul class="nav pull-right" >
 				{{if user}}
 				<a class="btn btn-default navbar-btn" href="/topic/new">发起</a>
 				<li class="dropdown">
@@ -36,9 +36,9 @@
 				</li>
 	
 				{{else}}
-					<li><a href="/">首页</a></li>
-					<li><a href="/register">注册</a></li>
-					<li><a href="/login">登录</a></li>
+					<li><a href="/" style="color: #FFFFFF; opacity: 1;">首页</a></li>
+					<li><a href="/register" style="color: #FFFFFF; opacity: 1;">注册</a></li>
+					<li><a href="/login" style="color: #FFFFFF; opacity: 1;">登录</a></li>
 				{{/if}}
 			</ul>
 			
